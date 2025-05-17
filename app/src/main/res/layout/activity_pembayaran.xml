@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#38CBBD"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:layout_marginStart="16dp"
+            app:tint="@android:color/white" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pembayaran"
+            android:textSize="20sp"
+            android:fontFamily="@font/inter_bold"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp" />
+
+        <!-- Harga -->
+        <TextView
+            android:id="@+id/txtHarga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rp. 75.000"
+            android:fontFamily="@font/inter_black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp" />
+
+        <!-- Card White Rounded Full Width -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_card_rounded"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Pilih Metode -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pilih Metode Pembayaran"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnBankTransfer"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00BFA6"
+                    android:text="Bank Transfer"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnCash"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#EEEEEE"
+                    android:text="Cash"
+                    android:textColor="#000000"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+
+            <!-- Pilih Bank -->
+            <TextView
+                android:id="@+id/tvPilihBank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Pilih Bank"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/layoutBank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="3">
+
+                <ImageButton
+                    android:id="@+id/btnMandiri"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:padding="4dp"
+                    android:src="@drawable/mandiri" />
+
+                <ImageButton
+                    android:id="@+id/btnBSI"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:padding="4dp"
+                    android:src="@drawable/bsi" />
+
+                <ImageButton
+                    android:id="@+id/btnBCA"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:padding="4dp"
+                    android:src="@drawable/bca" />
+            </LinearLayout>
+
+            <!-- No. Rekening -->
+            <TextView
+                android:id="@+id/tvLabelRekPengirim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Masukkan No. Rekening"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_medium"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etNoRekening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Masukkan No. Rekening"
+                android:textColorHint="#9E9E9E"
+                android:textColor="#000000"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="12sp"
+                android:padding="12dp" />
+
+            <!-- No. Rekening Penerima -->
+            <TextView
+                android:id="@+id/tvLabelRekPenerima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Masukkan No. Rekening Penerima"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_medium"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etRekPenerima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Masukkan No. Rekening Penerima"
+                android:textColorHint="#9E9E9E"
+                android:textColor="#000000"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="12sp"
+                android:padding="12dp" />
+
+            <!-- Nama Penerima -->
+            <TextView
+                android:id="@+id/tvLabelNamaPenerima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nama Penerima"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_medium"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etNamaPenerima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Masukkan Nama Penerima"
+                android:textColorHint="#9E9E9E"
+                android:textColor="#000000"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="12sp"
+                android:padding="12dp" />
+
+
+            <Button
+                android:id="@+id/btnBayar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#66DEFF"
+                android:text="Bayar"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

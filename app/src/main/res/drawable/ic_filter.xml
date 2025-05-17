@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Garis kiri -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M6,2v6 M6,12v10" />
+
+    <!-- Slider kiri -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M6,10a1.5,1.5 0 1,0 0,-3a1.5,1.5 0 1,0 0,3" />
+
+    <!-- Garis tengah -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M12,2v10 M12,16v6" />
+
+    <!-- Slider tengah -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M12,14a1.5,1.5 0 1,0 0,-3a1.5,1.5 0 1,0 0,3" />
+
+    <!-- Garis kanan -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M18,2v4 M18,10v12" />
+
+    <!-- Slider kanan -->
+    <path
+        android:strokeWidth="1.5"
+        android:strokeColor="#000000"
+        android:pathData="M18,8a1.5,1.5 0 1,0 0,-3a1.5,1.5 0 1,0 0,3" />
+</vector>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pilih Tanggal dan Waktu"
+            android:textStyle="bold"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="18sp"
+            android:layout_marginTop="12dp" />
+
+        <!-- CalendarView -->
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:firstDayOfWeek="2" />
+
+        <!-- Jam Kerja Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Jam Tutor"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtLihatSemua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lihat Semua"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="#00BFFF"
+                android:textSize="14sp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- MaterialButtonToggleGroup (Jam Pilihan) -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/timeToggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTime1"
+                style="@style/TimeToggleButton"
+                android:text="11.00" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTime2"
+                style="@style/TimeToggleButton"
+                android:text="14.00" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTime3"
+                style="@style/TimeToggleButton"
+                android:text="16.00" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        <!-- Lokasi Input -->
+        <EditText
+            android:id="@+id/etLokasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan Lokasi"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_edit_text"
+            android:padding="12dp" />
+
+        <!-- Button Jadwal -->
+        <Button
+            android:id="@+id/btnJadwalkan"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Jadwalkan Tutor"
+            android:fontFamily="@font/inter_bold"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#00BFFF"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

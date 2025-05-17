@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Scrollable bagian atas -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="Back" />
+
+            <!-- Gambar pelajaran -->
+            <ImageView
+                android:id="@+id/imgPelajaran"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/kimia"
+                android:background="@drawable/bg_top_rounded" />
+
+            <!-- Judul -->
+            <TextView
+                android:id="@+id/txtNamaPelajaran"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kimia"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_bold" />
+
+            <!-- Deskripsi -->
+            <TextView
+                android:id="@+id/txtDeskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kimia itu seru, lho! Di pelajaran ini, kamu bakal belajar tentang segala hal yang ada di sekitar kita—dari air yang kita minum sampai udara yang kita hirup. Kamu juga bakal tahu kenapa roti bisa mengembang, kenapa es bisa mencair,  dan gimana reaksi antar zat bisa menghasilkan sesuatu yang baru. Kimia ngajarin kita buat lebih peka sama dunia, dan pastinya bikin penasaran terus karena banyak percobaan seru!"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:textColor="#666666"
+                android:lineSpacingExtra="4dp"
+                android:fontFamily="@font/inter_regular"/>
+
+            <!-- Label daftar tutor -->
+            <TextView
+                android:id="@+id/txtDaftarTutor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daftar Tutor Spesialis"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/inter_bold" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- RecyclerView Daftar Tutor -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTutorSpesialis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"/>
+</LinearLayout>

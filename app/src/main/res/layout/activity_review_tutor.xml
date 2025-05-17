@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Tombol back -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Kembali" />
+
+    <!-- Foto Tutor -->
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/tutor"
+        android:background="@drawable/bg_picture"
+        android:scaleType="centerCrop" />
+
+    <!-- Nama & Bidang -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Kak Lisa"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/inter_bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Tutor Fisika"
+        android:textColor="#777777"
+        android:fontFamily="@font/inter_regular"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Rating Bar -->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:rating="5"
+        android:isIndicator="false"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:progressTint="#FFA500" />
+
+    <!-- Review Text -->
+    <EditText
+        android:id="@+id/etReview"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="Tulis sesuatu tentang tutor ini..."
+        android:background="@drawable/edit_text_border"
+        android:gravity="top|start"
+        android:padding="12dp"
+        android:fontFamily="@font/inter_regular"
+        android:textSize="12sp"
+        android:inputType="textMultiLine" />
+
+    <!-- Tombol -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnTidakSekarang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#E0F7FA"
+            android:text="Tidak Sekarang"
+            android:textColor="#00BCD4"
+            android:fontFamily="@font/inter_bold" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnKirimReview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#00BCD4"
+            android:text="Beri Review"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/inter_bold" />
+    </LinearLayout>
+</LinearLayout>

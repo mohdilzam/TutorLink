@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Buku berdiri (kiri) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#38CBBD"
+        android:strokeWidth="1.5"
+        android:pathData="M5,3 H9 C9.55,3 10,3.45 10,4 V20 C10,20.55 9.55,21 9,21 H5 C4.45,21 4,20.55 4,20 V4 C4,3.45 4.45,3 5,3 Z" />
+
+    <!-- Garis pembatas buku berdiri -->
+    <path
+        android:strokeColor="#38CBBD"
+        android:strokeWidth="0.8"
+        android:fillColor="#0B8FAC"
+        android:pathData="M4,7 H10" />
+
+    <!-- Buku miring ke kanan -->
+    <group
+        android:rotation="15"
+        android:pivotX="18"
+        android:pivotY="6">
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#38CBBD"
+            android:strokeWidth="1.5"
+            android:pathData="M16,4 H20 C20.55,4 21,4.45 21,5 V19 C21,19.55 20.55,20 20,20 H16 C15.45,20 15,19.55 15,19 V5 C15,4.45 15.45,4 16,4 Z" />
+
+        <!-- Garis pembatas buku miring -->
+        <path
+            android:strokeColor="#38CBBD"
+            android:strokeWidth="0.8"
+            android:fillColor="#00000000"
+            android:pathData="M15,9 H21" />
+    </group>
+</vector>

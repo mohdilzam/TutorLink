@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <!-- Icon -->
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="148dp"
+        android:src="@drawable/ic_success"
+        android:contentDescription="Success Icon"/>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selamat"
+        android:textStyle="bold"
+        android:textColor="#00BFA6"
+        android:fontFamily="@font/poppins_extrabold"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp" />
+
+    <!-- Description -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pembayaran anda berhasil !"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:layout_marginTop="8dp" />
+
+    <!-- Button -->
+    <Button
+        android:id="@+id/btnKembali"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kembali"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#66DEFF"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:padding="12dp" />
+</LinearLayout>

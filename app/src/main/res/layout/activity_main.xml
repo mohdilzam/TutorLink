@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_tutorlink_logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/appName"
+        android:layout_below="@id/logoImage"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:text="TutorLink"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/poppins_extrabold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagline"
+        android:layout_below="@id/appName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Temukan Guru Les Privat Terbaik"
+        android:textSize="15dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/poppins_semibold"/>
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="184dp"
+        android:layout_height="52dp"
+        android:layout_below="@+id/tagline"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="102dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="205dp"
+        android:backgroundTint="#66DEFF"
+        android:text="Mulai"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/poppins_bold"/>
+
+</RelativeLayout>

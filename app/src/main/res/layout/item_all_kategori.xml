@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/imgKategori"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_circle_allkategory"
+        android:padding="2dp"
+        android:contentDescription="Kategori"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/txtKategori"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kimia"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"/>
+</LinearLayout>
