@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TutorLink</string>
+    <string name="default_web_client_id">557668648122-pqfj70ggj6g4b5no65s02h41b8rp8t2g.apps.googleusercontent.com</string>
+    <string name="search_icon">🔍</string>
+    <string name="filter_icon">⚙️</string>
+    <string name="hai_pengguna">Halo, Pengguna</string>
+    <string name="hai_pengguna_placeholder">Halo, %1$s</string>
+    <string name="lihat_semua_kategori">Lihat Semua Kategori</string>
+    <string name="lihat_semua_tutor">Lihat Semua Tutor</string>
+    <string name="riwayat_transaksi">Riwayat Transaksi</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import model.Review
 import android.content.Intent
+import com.bumptech.glide.Glide
 
 class ProfilTutorActivity : AppCompatActivity() {
 
@@ -41,19 +42,27 @@ class ProfilTutorActivity : AppCompatActivity() {
         val spesialis = intent.getStringExtra("spesialisTutor")
         val biaya = intent.getStringExtra("biayaTutor")
         val deskripsi = intent.getStringExtra("deskripsiTutor")
-        val fotoResId = intent.getIntExtra("fotoTutor", R.drawable.tutor)
+        val imageUrl = intent.getStringExtra("imageUrl")
 
         // Tampilkan data
         txtNamaTutor.text = namaTutor
         txtSpesialisTutor.text = spesialis
         txtBiayaTutor.text = biaya
         txtDeskripsi.text = deskripsi
-        imgTutor.setImageResource(fotoResId)
+
+        // Tampilkan gambar menggunakan Glide
+        if (!imageUrl.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.tutor)
+                .error(R.drawable.tutor)
+                .into(imgTutor)
+        } else {
+            imgTutor.setImageResource(R.drawable.tutor)
+        }
 
         // Tombol kembali
-        btnBack.setOnClickListener {
-            finish()
-        }
+        btnBack.setOnClickListener { finish() }
 
         // Booking tutor
         btnBooking.setOnClickListener {

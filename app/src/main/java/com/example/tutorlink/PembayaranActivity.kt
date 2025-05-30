@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import model.Pembayaran
 
 class PembayaranActivity : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class PembayaranActivity : AppCompatActivity() {
     private lateinit var etNoRekening: EditText
     private lateinit var etRekPenerima: EditText
     private lateinit var etNamaPenerima: EditText
+    private var bookingId: String? = null
 
     // Bank buttons
     private lateinit var tvPilihBank: TextView
@@ -33,8 +35,10 @@ class PembayaranActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pembayaran)
+        bookingId = intent.getStringExtra("bookingId")
 
-        // Inisialisasi views
+
+        //Inisialisasi views
         btnBack = findViewById(R.id.btnBack)
         btnBayar = findViewById(R.id.btnBayar)
         btnBankTransfer = findViewById(R.id.btnBankTransfer)
@@ -77,7 +81,6 @@ class PembayaranActivity : AppCompatActivity() {
         }
 
         btnBayar.setOnClickListener {
-            // Contoh: validasi sederhana
             if (selectedPaymentMethod == "Bank Transfer") {
                 if (etNoRekening.text.isEmpty() || etRekPenerima.text.isEmpty() || etNamaPenerima.text.isEmpty()) {
                     Toast.makeText(this, "Lengkapi semua data rekening", Toast.LENGTH_SHORT).show()
@@ -88,9 +91,43 @@ class PembayaranActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
             }
-            val intent = Intent(this, PaymentSuccessActivity::class.java)
-            startActivity(intent)
+
+            val userId = FirebaseHelper.getCurrentUserId() ?: return@setOnClickListener
+            val currentBookingId = bookingId
+            if (currentBookingId.isNullOrEmpty()) {
+                Toast.makeText(this, "Booking ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val bank = when (selectedBank) {
+                btnMandiri -> "Mandiri"
+                btnBSI -> "BSI"
+                btnBCA -> "BCA"
+                else -> ""
+            }
+
+            val pembayaran = Pembayaran(
+                userId = userId,
+                bookingId = currentBookingId,
+                metode = selectedPaymentMethod,
+                bank = bank,
+                noRekening = etNoRekening.text.toString(),
+                rekPenerima = etRekPenerima.text.toString(),
+                namaPenerima = etNamaPenerima.text.toString()
+            )
+
+            FirebaseHelper.simpanPembayaran(pembayaran,
+                onSuccess = {
+                    val intent = Intent(this, PaymentSuccessActivity::class.java)
+                    startActivity(intent)
+                },
+                onFailure = {
+                    Toast.makeText(this, "Gagal menyimpan pembayaran: $it", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
+
+
     }
 
     private fun setPaymentMethod(method: String) {

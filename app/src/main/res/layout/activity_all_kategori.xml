@@ -32,13 +32,24 @@
         android:textColor="@android:color/black"
         android:paddingLeft="12dp"/>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchViewKategori"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtJudul"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:queryHint="Cari kategori..." />
+
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAllKategori"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/txtJudul"
-        android:padding="16dp"
+        android:layout_marginTop="35dp"
         android:clipToPadding="false"
-        android:nestedScrollingEnabled="true" />
+        android:nestedScrollingEnabled="true"
+        android:padding="16dp" />
 </RelativeLayout>

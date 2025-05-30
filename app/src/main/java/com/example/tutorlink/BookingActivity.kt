@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.firebase.auth.FirebaseAuth
 
 class BookingActivity : AppCompatActivity() {
 
@@ -54,12 +55,33 @@ class BookingActivity : AppCompatActivity() {
             if (selectedDate.isEmpty() || selectedTime.isEmpty() || lokasi.isEmpty()) {
                 Toast.makeText(this, "Lengkapi semua data", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this, PembayaranActivity::class.java).apply {
-                    putExtra("tanggal", selectedDate)
-                    putExtra("jam", selectedTime)
-                    putExtra("lokasi", lokasi)
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                val tutorId = intent.getStringExtra("tutorId") ?: ""
+
+                if (userId == null || tutorId.isEmpty()) {
+                    Toast.makeText(this, "Gagal mendapatkan user atau tutor ID", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
-                startActivity(intent)
+
+                FirebaseHelper.bookTutor(
+                    userId = userId,
+                    tutorId = tutorId,
+                    tanggal = selectedDate,
+                    jam = selectedTime,
+                    onSuccess = { bookingId ->
+                        Toast.makeText(this, "Booking berhasil", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, PembayaranActivity::class.java).apply {
+                            putExtra("bookingId", bookingId)
+                            putExtra("tanggal", selectedDate)
+                            putExtra("jam", selectedTime)
+                            putExtra("lokasi", lokasi)
+                        }
+                        startActivity(intent)
+                    },
+                    onFailure = { error ->
+                        Toast.makeText(this, "Gagal booking: $error", Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         }
     }

@@ -1,63 +1,54 @@
 package com.example.tutorlink
 
-import adapters.AllTutorAdapter
-import android.content.Intent
+import adapters.TutorAdapter
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import model.AllTutor
-
+import model.Tutor
 
 class AllTutorsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: AllTutorAdapter
-    private lateinit var tutorList: List<AllTutor>
+    private lateinit var searchBar: EditText
+    private lateinit var tutorAdapter: TutorAdapter
+    private var tutorList: List<Tutor> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_tutor)
 
         recyclerView = findViewById(R.id.recyclerAllTutor)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        searchBar = findViewById(R.id.edtSearchTutor)
+        val btnBack = findViewById<ImageView>(R.id.btnBack)
 
-        // Tombol back ke HomeActivity
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-        }
+        btnBack.setOnClickListener { finish() }
 
-        // Dummy data
-        tutorList = listOf(
-            AllTutor("Kak Yusuf", "Tutor Kimia", "Lokasi, Banda Aceh", "Rp50.000", 3, "Berpengalaman mengajar 5 tahun", "5.0", R.drawable.tutor),
-            AllTutor("Kak Raja", "Tutor Matematika", "Lokasi, Banda Aceh", "Rp60.000", 2, "Spesialis UTBK dan olimpiade", "4.8", R.drawable.tutor),
-            AllTutor("Kak Fatimah", "Tutor B. Inggris", "Lokasi, Banda Aceh", "Rp55.000", 4, "Lulusan S2 luar negeri", "4.9", R.drawable.tutor),
-            AllTutor("Kak Lisa", "Tutor Fisika", "Lokasi, Banda Aceh", "Rp50.000", 5, "Pengalaman mengajar 3 tahun", "4.7", R.drawable.tutor),
-            AllTutor("Kak Bara", "Tutor Olahraga", "Lokasi, Banda Aceh", "Rp45.000", 1, "Tutor profesional dan ramah", "5.0", R.drawable.tutor)
-        )
+        FirebaseHelper.getAllTutors(
+            onSuccess = { tutor ->
+                tutorList = tutor
+                tutorAdapter = TutorAdapter(tutorList)
+                recyclerView.layoutManager = LinearLayoutManager(this)
+                recyclerView.adapter = tutorAdapter
 
-        adapter = AllTutorAdapter(
-            tutorList,
-            onItemClick = { tutor ->
-                val intent = Intent(this, ProfilTutorActivity::class.java).apply {
-                    putExtra("namaTutor", tutor.nama)
-                    putExtra("spesialisTutor", tutor.pelajaran)
-                    putExtra("biayaTutor", tutor.biaya)
-                    putExtra("deskripsiTutor", tutor.deskripsi)
-                    putExtra("fotoTutor", tutor.imageResId)
-                }
-                startActivity(intent)
+                // ✅ Tambahkan pencarian
+                searchBar.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        tutorAdapter.filter(s.toString())
+                    }
+
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                })
             },
-            onChatClick = { tutor ->
-                val intent = Intent(this, RoomChatActivity::class.java).apply {
-                    putExtra("namaTutor", tutor.nama)
-                }
-                startActivity(intent)
+            onFailure = { error ->
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
             }
         )
-
-        recyclerView.adapter = adapter
     }
 }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "675656331709",
+    "project_id": "tutorlink-61469",
+    "storage_bucket": "tutorlink-61469.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675656331709:android:8a5786dd4a88b05da8a2d4",
+        "android_client_info": {
+          "package_name": "com.example.tutorlink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675656331709-2cmsgeu3jaemu9qbls7vq35kf7d1utbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tutorlink",
+            "certificate_hash": "1d9b6d570126215fad41b5d30aa67afc6c06eb00"
+          }
+        },
+        {
+          "client_id": "675656331709-khpulc21uko930jgpntl4tgcfsll13nq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ5k1HUcFSoblI6w1igXAjS5r9Ml_Sxow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675656331709-khpulc21uko930jgpntl4tgcfsll13nq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,12 +1,10 @@
 package adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tutorlink.R
+import com.bumptech.glide.Glide
+import com.example.tutorlink.databinding.ItemTutorSpesialisBinding
 import model.AllTutor
 
 class TutorSpesialisAdapter(
@@ -14,33 +12,36 @@ class TutorSpesialisAdapter(
     private val onItemClick: (AllTutor) -> Unit
 ) : RecyclerView.Adapter<TutorSpesialisAdapter.TutorViewHolder>() {
 
-    inner class TutorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgTutor: ImageView = itemView.findViewById(R.id.imgTutor)
-        val txtNamaTutor: TextView = itemView.findViewById(R.id.txtNamaTutor)
-        val txtLokasiTutor: TextView = itemView.findViewById(R.id.txtLokasiTutor)
-        val txtJarak: TextView = itemView.findViewById(R.id.txtJarak)
-        val txtRating: TextView = itemView.findViewById(R.id.txtRating)
-        val txtLihatProfil: TextView = itemView.findViewById(R.id.txtLihatProfil)
+    inner class TutorViewHolder(val binding: ItemTutorSpesialisBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(tutor: AllTutor) {
+            binding.txtNamaTutor.text = tutor.nama
+            binding.txtPelajaranTutor.text = tutor.pelajaran
+            binding.txtLokasiTutor.text = tutor.lokasi
+            binding.txtRatingTutor.text = tutor.rating
+            binding.txtBiaya.text = tutor.biaya
+            binding.txtJarak.text = "${tutor.jarak} km"
+
+            // Load gambar dari URL menggunakan Glide
+            Glide.with(binding.root.context)
+                .load(tutor.imageUrl)
+                .into(binding.imgTutor)
+
+            // Event klik
+            binding.btnLihatProfil.setOnClickListener {
+                onItemClick(tutor)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TutorViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_tutor_spesialis, parent, false)
-        return TutorViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemTutorSpesialisBinding.inflate(inflater, parent, false)
+        return TutorViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TutorViewHolder, position: Int) {
-        val tutor = tutorList[position]
-        holder.txtNamaTutor.text = tutor.nama
-        holder.txtLokasiTutor.text = tutor.lokasi
-        holder.txtJarak.text = "${tutor.jarak} km"
-        holder.txtRating.text = "⭐ ${tutor.rating}"
-        holder.imgTutor.setImageResource(tutor.imageResId)
-
-        // Aksi klik (misalnya tampilkan detail)
-        holder.txtLihatProfil.setOnClickListener {
-            onItemClick(tutor)
-        }
+        holder.bind(tutorList[position])
     }
 
     override fun getItemCount(): Int = tutorList.size

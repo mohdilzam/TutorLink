@@ -23,13 +23,28 @@ class RegisterActivity : AppCompatActivity() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
 
+            // Koreksi logika: gunakan ||
             if (nama.isEmpty() || hp.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Semua field harus diisi", Toast.LENGTH_SHORT).show()
             } else {
-                // Simulasi registrasi
-                Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                // Disable tombol untuk mencegah klik ganda
+                btnRegister.isEnabled = false
+
+                FirebaseHelper.registerUser(
+                    name = nama,
+                    email = email,
+                    password = password,
+                    phone = hp,
+                    onSuccess = {
+                        Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    },
+                    onFailure = { errorMessage ->
+                        btnRegister.isEnabled = true
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         }
 

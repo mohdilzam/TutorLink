@@ -1,24 +1,27 @@
 package com.example.tutorlink
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import model.KategoriPelajaran
 import adapters.KategoriAdapter
 import android.content.Intent
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import model.KategoriPelajaran
+import com.example.tutorlink.FirebaseHelper
+import androidx.appcompat.widget.SearchView
+
 
 
 class AllKategoriActivity : AppCompatActivity() {
 
     private lateinit var recyclerAllKategori: RecyclerView
-    private val kategoriList = listOf(
-        KategoriPelajaran("Kimia", R.drawable.kimia),
-        KategoriPelajaran("Fisika", R.drawable.kimia),
-        KategoriPelajaran("Biologi", R.drawable.kimia),
-        // ... Tambahkan sesuai data kamu
-    )
+    private lateinit var kategoriAdapter: KategoriAdapter
+    private val kategoriList = mutableListOf<KategoriPelajaran>()
+    private lateinit var searchViewKategori: SearchView
+    private var originalList = listOf<KategoriPelajaran>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +29,53 @@ class AllKategoriActivity : AppCompatActivity() {
 
         recyclerAllKategori = findViewById(R.id.recyclerAllKategori)
         recyclerAllKategori.layoutManager = GridLayoutManager(this, 3)
-        recyclerAllKategori.adapter = KategoriAdapter(kategoriList) { kategori ->
+
+        kategoriAdapter = KategoriAdapter(kategoriList) { kategori ->
             val intent = Intent(this, DetailPelajaranActivity::class.java).apply {
-                putExtra("nama_pelajaran", kategori.nama)
-                putExtra("icon_pelajaran", kategori.imageResId)
+                putExtra("kategoriNama", kategori.nama)
             }
             startActivity(intent)
         }
-
+        recyclerAllKategori.adapter = kategoriAdapter
 
         findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
+
+        // Inisialisasi SearchView
+        val searchViewKategori = findViewById<SearchView>(R.id.searchViewKategori)
+        searchViewKategori.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false // tidak perlu aksi khusus saat submit
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filtered = originalList.filter {
+                    it.nama.contains(newText ?: "", ignoreCase = true)
+                }
+                kategoriList.clear()
+                kategoriList.addAll(filtered)
+                kategoriAdapter.notifyDataSetChanged()
+                return true
+            }
+        })
+
+        loadKategoriPelajaran()
+    }
+
+
+    private fun loadKategoriPelajaran() {
+        FirebaseHelper.getAllKategoriPelajaran(
+            onSuccess = { list ->
+                originalList = list
+                kategoriList.clear()
+                kategoriList.addAll(list)
+                kategoriAdapter.notifyDataSetChanged()
+            },
+            onFailure = { error ->
+                Toast.makeText(this, "Gagal: $error", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 }

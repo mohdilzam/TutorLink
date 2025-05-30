@@ -1,97 +1,56 @@
 package com.example.tutorlink
 
+import BookingAdapter
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tutorlink.FirebaseHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.*
+import com.google.firebase.database.*
+import model.Booking
 
 class BookedTutorActivity : AppCompatActivity() {
 
     private lateinit var tabBooked: TextView
     private lateinit var tabSelesai: TextView
-    private lateinit var layoutBooked: LinearLayout
-    private lateinit var layoutSelesai: LinearLayout
+    private lateinit var recyclerBooking: RecyclerView
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var bookingQuery: Query
+    private val bookedList = mutableListOf<Booking>()
+    private val selesaiList = mutableListOf<Booking>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booked_tutor)
 
-        // Bind views
         tabBooked = findViewById(R.id.tabBooked)
         tabSelesai = findViewById(R.id.tabSelesai)
-        layoutBooked = findViewById(R.id.layoutBooked)
-        layoutSelesai = findViewById(R.id.layoutSelesai)
+        recyclerBooking = findViewById(R.id.recyclerBooking)
+        bottomNav = findViewById(R.id.bottomNavigationView)
 
-        val btnHubungi = findViewById<ImageView>(R.id.btnHubungi)
-        val btnGantiJadwal = findViewById<Button>(R.id.btnGantiJadwal)
-        val btnBatalkan = findViewById<Button>(R.id.btnBatalkan)
-        val btnReview = findViewById<Button>(R.id.btnReview)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        recyclerBooking.layoutManager = LinearLayoutManager(this)
 
-        // Set tab default
-        val tabIntent = intent.getStringExtra("tab")
-        if (tabIntent == "selesai") {
-            switchToSelesai()
-        } else {
-            switchToBooked()
+        val userId = FirebaseHelper.getCurrentUserId()
+        if (userId == null) {
+            Toast.makeText(this, "User belum login", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
 
-        // Tab clicked
-        tabBooked.setOnClickListener {
-            switchToBooked()
-        }
+        bookingQuery = FirebaseDatabase.getInstance()
+            .getReference("Bookings")
+            .orderByChild("userId")
+            .equalTo(userId)
 
-        tabSelesai.setOnClickListener {
-            switchToSelesai()
-        }
+        tabBooked.setOnClickListener { showBooked() }
+        tabSelesai.setOnClickListener { showSelesai() }
 
-        btnHubungi.setOnClickListener {
-            val intent = Intent(this, RoomChatActivity::class.java)
-            // Kirim data tutor jika perlu
-            intent.putExtra("namaTutor", "Kak Yusuf")
-            startActivity(intent)
-        }
-
-        // Tombol ganti jadwal
-        btnGantiJadwal.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
-                val selectedDate = "$dayOfMonth/${month + 1}/$year"
-                val timePicker = TimePickerDialog(this, { _, hour, minute ->
-                    val selectedTime = String.format("%02d:%02d", hour, minute)
-                    Toast.makeText(this, "Jadwal diubah ke: $selectedDate - $selectedTime", Toast.LENGTH_LONG).show()
-                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
-                timePicker.show()
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-            datePicker.show()
-        }
-
-        // Tombol batalkan
-        btnBatalkan.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Batalkan Tutor")
-                .setMessage("Apakah kamu yakin ingin membatalkan sesi tutor ini?")
-                .setPositiveButton("Ya") { _, _ ->
-                    Toast.makeText(this, "Tutor berhasil dibatalkan", Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton("Tidak", null)
-                .show()
-        }
-
-        // Tombol review
-        btnReview.setOnClickListener {
-            val intent = Intent(this, ReviewTutorActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Bottom navigation
         bottomNav.selectedItemId = R.id.nav_book
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -99,33 +58,63 @@ class BookedTutorActivity : AppCompatActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     true
                 }
+
                 R.id.nav_profile -> {
                     startActivity(Intent(this, ProfilActivity::class.java))
-                    overridePendingTransition(0, 0)
                     true
                 }
+
                 R.id.nav_chat -> {
                     startActivity(Intent(this, PesanActivity::class.java))
                     true
                 }
+
                 R.id.nav_book -> true
                 else -> false
             }
         }
+
+        loadBookings()
     }
 
-    private fun switchToBooked() {
-        layoutBooked.visibility = View.VISIBLE
-        layoutSelesai.visibility = View.GONE
+    private fun loadBookings() {
+        bookingQuery.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                bookedList.clear()
+                selesaiList.clear()
+                for (data in snapshot.children) {
+                    val booking = data.getValue(Booking::class.java)
+                    booking?.bookingId = data.key // <- Tambahan penting ini
+
+                    if (booking != null) {
+                        if (booking.status == "booked") {
+                            bookedList.add(booking)
+                        } else if (booking.status == "selesai") {
+                            selesaiList.add(booking)
+                        }
+                    }
+                }
+                showBooked()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@BookedTutorActivity, "Gagal memuat data", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+
+
+    private fun showBooked() {
+        recyclerBooking.adapter = BookingAdapter(bookedList)
         tabBooked.setBackgroundResource(R.drawable.tab_selected)
         tabSelesai.setBackgroundColor(Color.TRANSPARENT)
         tabBooked.setTextColor(Color.parseColor("#38CBBD"))
         tabSelesai.setTextColor(Color.parseColor("#888888"))
     }
 
-    private fun switchToSelesai() {
-        layoutBooked.visibility = View.GONE
-        layoutSelesai.visibility = View.VISIBLE
+    private fun showSelesai() {
+        recyclerBooking.adapter = BookingAdapter(selesaiList)
         tabSelesai.setBackgroundResource(R.drawable.tab_selected)
         tabBooked.setBackgroundColor(Color.TRANSPARENT)
         tabSelesai.setTextColor(Color.parseColor("#38CBBD"))

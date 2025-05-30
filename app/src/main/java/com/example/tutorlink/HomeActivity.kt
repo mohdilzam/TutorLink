@@ -1,164 +1,86 @@
-//package com.example.tutorlink
-//
-//import adapters.BannerAdapter
-//import adapters.KategoriAdapter
-//import adapters.TutorAdapter
-//import android.content.Intent
-//import android.os.Bundle
-//import android.view.View
-//import android.widget.TextView
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.recyclerview.widget.LinearLayoutManager
-//import androidx.recyclerview.widget.RecyclerView
-//import androidx.viewpager2.widget.ViewPager2
-//import model.KategoriPelajaran
-//import model.Tutor
-//import com.example.tutorlink.R
-//
-//class HomeActivity : AppCompatActivity() {
-//
-//    private val kategoriList = listOf(
-//        KategoriPelajaran("Kimia", R.drawable.kimia),
-//        KategoriPelajaran("Fisika", R.drawable.kimia),
-//        KategoriPelajaran("Matematika", R.drawable.kimia),
-//        KategoriPelajaran("B. Inggris", R.drawable.kimia)
-//    )
-//
-//    private val tutorList = listOf(
-//        Tutor("Kak Rizky", "Biologi", 4.7, R.drawable.kimia),
-//        Tutor("Kak Lisa", "Fisika", 4.8, R.drawable.kimia),
-//        Tutor("Kak Raja", "Matematika", 4.9, R.drawable.kimia)
-//    )
-//
-//    private val bannerList = listOf(
-//        R.drawable.kimia,
-//        R.drawable.kimia,
-//        R.drawable.kimia
-//    )
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_home)
-//
-//        val viewPagerHero = findViewById<ViewPager2>(R.id.viewPagerHero)
-//        viewPagerHero.adapter = BannerAdapter(bannerList)
-//
-//        val recyclerKategori = findViewById<RecyclerView>(R.id.recyclerKategori)
-//        recyclerKategori.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        recyclerKategori.adapter = KategoriAdapter(kategoriList) { selectedKategori ->
-//            val intent = Intent(this, DetailPelajaranActivity::class.java)
-//            intent.putExtra("namaPelajaran", selectedKategori.nama)
-//            startActivity(intent)
-//        }
-//
-//
-//        val recyclerTutor = findViewById<RecyclerView>(R.id.recyclerTutor)
-//        recyclerTutor.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        recyclerTutor.adapter = TutorAdapter(tutorList)
-//
-//        val btnShowAllKategori = findViewById<TextView>(R.id.btnShowAllKategori)
-//        btnShowAllKategori.setOnClickListener {
-//            val intent = Intent(this, AllKategoriActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//        val btnShowAllTutor = findViewById<TextView>(R.id.btnShowAllTutor)
-//        btnShowAllTutor.setOnClickListener {
-//            val intent = Intent(this, AllTutorsActivity::class.java)
-//            startActivity(intent)
-//        }
-//    }
-//}
-
 package com.example.tutorlink
 
-import adapters.BannerAdapter
 import adapters.KategoriAdapter
 import adapters.TutorAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.*
 import model.KategoriPelajaran
 import model.Tutor
 
 class HomeActivity : AppCompatActivity() {
 
-    private val kategoriList = listOf(
-        KategoriPelajaran("Kimia", R.drawable.kimia),
-        KategoriPelajaran("Fisika", R.drawable.kimia),
-        KategoriPelajaran("Matematika", R.drawable.kimia),
-        KategoriPelajaran("B. Inggris", R.drawable.kimia)
-    )
-
-    private val tutorList = listOf(
-        Tutor("Kak Rizky", "Biologi", 4.7, R.drawable.kimia),
-        Tutor("Kak Lisa", "Fisika", 4.8, R.drawable.kimia),
-        Tutor("Kak Raja", "Matematika", 4.9, R.drawable.kimia)
-    )
-
-    private val bannerList = listOf(
-        R.drawable.kimia,
-        R.drawable.kimia,
-        R.drawable.kimia
-    )
+    private lateinit var kategoriRecycler: RecyclerView
+    private lateinit var tutorRecycler: RecyclerView
+    private lateinit var database: FirebaseDatabase
+    private lateinit var kategoriAdapter: KategoriAdapter
+    private lateinit var tutorAdapter: TutorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val viewPagerHero = findViewById<ViewPager2>(R.id.viewPagerHero)
-        viewPagerHero.adapter = BannerAdapter(bannerList)
+        database = FirebaseDatabase.getInstance()
 
-        val recyclerKategori = findViewById<RecyclerView>(R.id.recyclerKategori)
-        recyclerKategori.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerKategori.adapter = KategoriAdapter(kategoriList) { selectedKategori ->
-            val intent = Intent(this, DetailPelajaranActivity::class.java)
-            intent.putExtra("namaPelajaran", selectedKategori.nama)
-            startActivity(intent)
-        }
+        kategoriRecycler = findViewById(R.id.recyclerKategori)
+        tutorRecycler = findViewById(R.id.recyclerTutor)
 
-        val recyclerTutor = findViewById<RecyclerView>(R.id.recyclerTutor)
-        recyclerTutor.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerTutor.adapter = TutorAdapter(tutorList)
+        kategoriRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        tutorRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val btnShowAllKategori = findViewById<TextView>(R.id.btnShowAllKategori)
-        btnShowAllKategori.setOnClickListener {
-            val intent = Intent(this, AllKategoriActivity::class.java)
-            startActivity(intent)
-        }
+        // Load data dari Firebase
+        loadKategoriPelajaran()
+        loadTutor()
+    }
 
-        val btnShowAllTutor = findViewById<TextView>(R.id.btnShowAllTutor)
-        btnShowAllTutor.setOnClickListener {
-            val intent = Intent(this, AllTutorsActivity::class.java)
-            startActivity(intent)
-        }
+    private fun loadKategoriPelajaran() {
+        val kategoriRef = database.getReference("kategori_pelajaran")
 
-        // === Bottom Navigation ===
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNav.selectedItemId = R.id.nav_home
 
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true // sudah di halaman ini
-                R.id.nav_book -> {
-                    startActivity(Intent(this, BookedTutorActivity::class.java))
-                    true
+        kategoriRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val kategoriList = mutableListOf<KategoriPelajaran>()
+                for (data in snapshot.children) {
+                    val kategori = data.getValue(KategoriPelajaran::class.java)
+                    if (kategori != null) {
+                        kategoriList.add(kategori)
+                    }
                 }
-                R.id.nav_chat -> {
-                    startActivity(Intent(this, PesanActivity::class.java))
-                    true
+                kategoriAdapter = KategoriAdapter(kategoriList) {
+                    Toast.makeText(this@HomeActivity, "Klik: ${it.nama}", Toast.LENGTH_SHORT).show()
                 }
-                 R.id.nav_profile -> {
-                     startActivity(Intent(this, ProfilActivity::class.java))
-                     true
-                 }
-                else -> false
+                kategoriRecycler.adapter = kategoriAdapter
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity, "Gagal load kategori", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun loadTutor() {
+        val tutorRef = database.getReference("tutor")
+
+        tutorRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val tutorList = mutableListOf<Tutor>()
+                for (data in snapshot.children) {
+                    val tutor = data.getValue(Tutor::class.java)
+                    if (tutor != null) {
+                        tutorList.add(tutor)
+                    }
+                }
+                tutorAdapter = TutorAdapter(tutorList)
+                tutorRecycler.adapter = tutorAdapter
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@HomeActivity, "Gagal load tutor", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
